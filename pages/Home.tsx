@@ -1,0 +1,92 @@
+
+import React, { useLayoutEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { BRAND, GALLERY_DATABASE } from '../constants.tsx';
+import InstagramGrid, { MediaItem } from '../components/InstagramGrid.tsx';
+import { Camera, Film, BookOpen, Star, Instagram } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Home: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const FEATURED: MediaItem[] = GALLERY_DATABASE.stories.slice(0, 3).map((story) => ({
+    id: story.id,
+    type: 'image',
+    thumbnail: story.image,
+    likes: `${(4 + Math.random() * 5).toFixed(1)}k`,
+    comments: Math.floor(Math.random() * 200 + 50).toString(),
+    caption: `AK Brothers Photography | ${story.clientName}`
+  }));
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 1, delay: 0.2, ease: 'power3.out' });
+      gsap.from('.hero-letter', { opacity: 0, y: 100, rotateX: -90, stagger: 0.05, duration: 1.2, ease: 'expo.out', delay: 0.4 });
+      gsap.from('.hero-btns', { opacity: 0, y: 30, duration: 1, delay: 1.4, ease: 'power3.out' });
+      gsap.utils.toArray('.reveal').forEach((el: any) => {
+        gsap.from(el, {
+          opacity: 0,
+          y: 50,
+          duration: 1.2,
+          scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
+        });
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  const renderLetters = (text: string, customClass: string = "") => {
+    return text.split("").map((char, i) => (
+      <span key={i} className={`hero-letter inline-block ${customClass}`}>
+        {char === " " ? "\u00A0" : char}
+      </span>
+    ));
+  };
+
+  return (
+    <div ref={containerRef} className="bg-obsidian">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center opacity-30 grayscale-[0.2] scale-105" style={{ backgroundImage: `url(${BRAND.heroBg})` }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent" />
+        <div className="relative z-10 text-center px-6 perspective-1000">
+          <div className="overflow-hidden mb-6">
+            <span className="hero-sub text-gold font-cinzel text-[10px] tracking-[1.2em] uppercase block">Cinematic Legacies</span>
+          </div>
+          <h1 className="font-cinzel text-4xl md:text-8xl text-white mb-12 tracking-tighter flex flex-wrap justify-center items-center">
+            <div className="flex">{renderLetters("AK BROTHERS")}<span className="inline-block">&nbsp;</span><span className="text-gold italic flex">{renderLetters("PHOTOGRAPHY")}</span></div>
+          </h1>
+          <div className="hero-btns flex flex-wrap gap-6 justify-center">
+            <Link to="/stories" className="border border-gold/40 px-12 py-5 text-gold font-cinzel text-[10px] tracking-[0.4em] uppercase hover:bg-gold hover:text-obsidian transition-all duration-500">View Stories</Link>
+            <Link to="/contact" className="bg-gold px-12 py-5 text-obsidian font-cinzel text-[10px] tracking-[0.4em] uppercase hover:bg-white transition-all duration-500">Inquiry</Link>
+          </div>
+        </div>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+          <div className="w-[1px] h-12 bg-gradient-to-b from-gold to-transparent animate-pulse" />
+        </div>
+      </section>
+
+      <section className="py-40 px-6 reveal text-center">
+        <div className="max-w-4xl mx-auto">
+           <Star className="text-gold/20 mx-auto mb-10" size={32} />
+           <h2 className="font-cinzel text-3xl md:text-5xl text-silver mb-10 leading-tight">Capturing moments that <span className="text-gold">echo</span> through generations.</h2>
+           <p className="text-platinum/40 text-xs md:text-sm font-light tracking-[0.3em] leading-loose uppercase max-w-2xl mx-auto">Bhopal's premier wedding photography studio. We specialize in luxury storytelling.</p>
+        </div>
+      </section>
+
+      <div className="reveal">
+        <InstagramGrid items={FEATURED} title="Signature Feed" subtitle="Curated Highlights" />
+      </div>
+
+      <section className="py-56 text-center relative overflow-hidden reveal">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
+        <h2 className="relative z-10 font-cinzel text-4xl md:text-7xl text-white mb-16 tracking-tighter">Your Story is Next</h2>
+        <Link to="/contact" className="relative z-10 inline-block bg-gold px-20 py-7 text-obsidian font-cinzel text-[11px] tracking-[0.5em] uppercase hover:bg-white transition-all duration-500 shadow-xl">Book Consultation</Link>
+      </section>
+    </div>
+  );
+};
+
+export default Home;

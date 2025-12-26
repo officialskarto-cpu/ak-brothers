@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Brothers Photography | Cinematic Wedding Legacies</title>
+    <meta name="description" content="Bhopal's premier wedding cinematography studio. Capturing stories that echo through generations with AK Brothers Photography.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@200;400;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0a0a0a',
+                        charcoal: '#141414',
+                        silver: '#e2e2e2',
+                        platinum: '#A0A0A0',
+                        gold: '#d4af37',
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        manrope: ['Manrope', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --obsidian: #0a0a0a;
+            --charcoal: #141414;
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: #e2e2e2;
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+        /* Loader */
+        #loader {
+            position: fixed; inset: 0; background: var(--obsidian); z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease-out;
+        }
+        .loader-bar { width: 120px; height: 1px; background: var(--gold); animation: grow 2s infinite ease-in-out; }
+        @keyframes grow { 0% { transform: scaleX(0); opacity: 0; } 50% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(0); opacity: 0; } }
+
+        /* Aesthetic Overlays */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03; z-index: 9999; pointer-events: none;
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+    </style>
+
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?external=react,react-dom",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react",
+    "gsap": "https://esm.sh/gsap@3.12.5",
+    "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger",
+    "gsap/ScrollToPlugin": "https://esm.sh/gsap@3.12.5/ScrollToPlugin",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "gsap/": "https://esm.sh/gsap@^3.14.2/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="loader">
+        <div class="loader-bar"></div>
+        <span class="font-cinzel text-gold text-[10px] tracking-[0.6em] mt-6 uppercase">AK Brothers Photography</span>
+    </div>
+    
+    <div class="noise-overlay"></div>
+    <div id="root"></div>
+
+    <script type="module" src="index.tsx"></script>
+
+    <script>
+        // Smooth fade out of loader once content is ready
+        window.addEventListener('DOMContentLoaded', () => {
+            const checkRoot = setInterval(() => {
+                const root = document.getElementById('root');
+                if (root && root.children.length > 0) {
+                    clearInterval(checkRoot);
+                    setTimeout(() => {
+                        const loader = document.getElementById('loader');
+                        if (loader) {
+                            loader.style.opacity = '0';
+                            setTimeout(() => loader.style.display = 'none', 800);
+                        }
+                    }, 500);
+                }
+            }, 100);
+        });
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
